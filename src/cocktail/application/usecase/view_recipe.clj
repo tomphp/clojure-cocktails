@@ -1,9 +1,8 @@
 (ns cocktail.application.usecase.view-recipe
   (:require [cocktail.domain.repository.recipe :as recipe-repository]
-            [cocktail.domain.recipe :as recipe]))
+            [cocktail.domain.recipe :as recipe]
+            [clojure.set :refer [rename-keys]]))
 
 (defn run [recipe-id]
-  (let [recipe (recipe/get-values (recipe-repository/get-by-id recipe-id))]
-        {:name (:name recipe)
-         :username (:user recipe)
-         :rating (:rating recipe)}))
+  (rename-keys (recipe/get-values (recipe-repository/get-by-id recipe-id))
+               {:user :username}))
