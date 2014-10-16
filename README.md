@@ -1,32 +1,11 @@
-# cocktail
+# Cocktail Recipes
 
-FIXME: description
-
-## Installation
-
-Download from http://example.com/FIXME.
-
-## Usage
-
-FIXME: explanation
-
-    $ java -jar cocktail-0.1.0-standalone.jar [args]
-
-## Options
-
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
+This is a self education project. It's is version of the application from the
+[Modern Application Development in
+PHP](https://leanpub.com/modern-application-development-with-php) book I am
+currently working on, but it's written in Clojure. I'm building this alongside
+the PHP version as a way to improve my Clojure and to experiment in application
+architecture using it.
 
 ## License
 
