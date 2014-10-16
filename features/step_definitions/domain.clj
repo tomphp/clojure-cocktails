@@ -2,6 +2,9 @@
          '[cocktail.application.usecase.list-recipes :as list-recipes]
          '[cocktail.application.usecase.view-recipe :as view-recipe]
          '[cocktail.domain.recipe :as recipe]
+         '[cocktail.domain.ingredient :as ingredient]
+         '[cocktail.domain.measured-ingredient :as measured-ingredient]
+         '[cocktail.domain.unit :as unit]
          '[clojure.test :refer :all])
 
 (def result (atom nil))
@@ -13,14 +16,24 @@
 (defn- get-recipe-id [name]
   (get-in @recipe-info [name :id]))
 
-(defn- store-recipe [recipe]
-  (do (recipe-repository/store recipe)
-      (set-recipe-info-field (:name recipe)
+(defn- build-ingredients [recipe-info]
+  (map #(measured-ingredient/make (:amount %)
+                                  (unit/make (:unit %))
+                                  (ingredient/make (:name %)))
+       (:ingredients recipe-info)))
+
+(defn- store-recipe [recipe-info]
+  (do (recipe-repository/store (recipe/make (:name recipe-info)
+                                            (:user recipe-info)
+                                            (:rating recipe-info)
+                                            (:method recipe-info)
+                                            (build-ingredients recipe-info)))
+      (set-recipe-info-field (:name recipe-info)
                              :id
                              (recipe-repository/get-last-id))))
 
 (defn- store-all-recipes []
-  (doseq [recipe (map #(recipe/make (last %)) @recipe-info)]
+  (doseq [recipe (vals @recipe-info)]
     (store-recipe recipe)))
 
 (Before []
@@ -67,5 +80,5 @@
   (assert (= (str ((keyword name) @result)) value)))
 
 (Then #"^I should see a list of measured ingredients containing:$" [ingredients]
-  (comment  Express the Regexp above with the code you wish you had  )
-  (throw (cucumber.runtime.PendingException.)))
+  (assert (= (table->rows ingredients)
+             (map #(into {} (remove (comp nil? second) %)) (:ingredients @result)))))

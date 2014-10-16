@@ -1,10 +1,14 @@
-(ns cocktail.domain.recipe)
+(ns cocktail.domain.recipe
+  (:require [cocktail.domain.measured-ingredient :as measured-ingredient]))
 
-(defn make [params]
-  {:name (:name params)
-   :user (:user params)
-   :rating (double (:rating params))
-   :method (:method params)})
+(defn make [name user rating method ingredients]
+  {:name name
+   :user user
+   :rating (double rating)
+   :method method
+   :ingredients ingredients})
 
 (defn get-values [recipe]
-  recipe)
+  (assoc recipe
+         :ingredients
+         (map measured-ingredient/get-values (:ingredients recipe))))
