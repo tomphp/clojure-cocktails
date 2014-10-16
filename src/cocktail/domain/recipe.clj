@@ -3,7 +3,8 @@
 (defn make [params]
   {:name (:name params)
    :user (:user params)
-   :rating (double (:rating params))})
+   :rating (double (:rating params))
+   :method (:method params)})
 
 (defn get-values [recipe]
   recipe)

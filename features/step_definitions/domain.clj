@@ -24,9 +24,8 @@
     (store-recipe recipe)))
 
 (Before []
-  (do
-    (reset! recipe-info {})
-    (recipe-repository/clear)))
+  (do (reset! recipe-info {})
+      (recipe-repository/clear)))
 
 (Given #"^there are no recipes$" []
     (recipe-repository/clear))
@@ -64,10 +63,9 @@
 (Then #"^I should see a field \"([^\"]*)\" with value of \"([^\"]*)\"$" [name value]
   (assert (= (str ((keyword name) @result)) value)))
 
-(Then #"^I should see a field \"([^\"]*)\" with value:$" [arg1 arg2]
-  (comment  Express the Regexp above with the code you wish you had  )
-  (throw (cucumber.runtime.PendingException.)))
+(Then #"^I should see a field \"([^\"]*)\" with value:$" [name value]
+  (assert (= (str ((keyword name) @result)) value)))
 
-(Then #"^I should see a list of measured ingredients containing:$" [arg1]
+(Then #"^I should see a list of measured ingredients containing:$" [ingredients]
   (comment  Express the Regexp above with the code you wish you had  )
   (throw (cucumber.runtime.PendingException.)))
